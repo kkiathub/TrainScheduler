@@ -12,6 +12,8 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 
+var timeHandle;
+
 $("#add-train-btn").on("click", function (event) {
     event.preventDefault();
 
@@ -45,7 +47,7 @@ database.ref().on("child_added", function (childSnapshot) {
     var trainDestination = childSnapshot.val().destination;
     var trainFirst = childSnapshot.val().first;
     var trainFreq = childSnapshot.val().freq;
-
+    console.log(moment.unix(trainFirst).format("HH:mm"));
     var minDiff = moment().diff(moment(trainFirst, "X"), "minutes");
     var minToArr = trainFreq - (minDiff % trainFreq);
 
@@ -64,3 +66,27 @@ database.ref().on("child_added", function (childSnapshot) {
     // Append the new row to the table
     $("tbody").append(newRow);
 });
+
+function minuteUpdate() {
+    var rowData = $("tbody").children();
+    var colData;
+    for(var i=0; i<rowData.length; i++) {
+        // console.log( i + " " + rowData[i]);
+        colData = $(rowData[i]).children();
+        // console.log("col : " + colData.length);
+        var freq =    parseInt($(colData[2]).text());
+        var timeStr = $(colData[3]).text();
+        var minToArr = parseInt($(colData[4]).text()) - 1;
+
+        if (minToArr>0) {
+            $(colData[4]).text(minToArr);
+        } else {
+            $(colData[4]).text(freq);
+            $(colData[3]).text(moment(timeStr,"HH:mm").add( freq, "minutes").format("HH:mm"));
+        }
+
+    }
+    return;
+}
+
+timeHandle = setInterval(minuteUpdate, 60000);
