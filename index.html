@@ -28,6 +28,25 @@
             <h1 class="text-center">Train Scheduler</h1>
             <h3 class="text-center">Let's your trip begin!</h3>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="text-update">Modal title</h5>
+                    </div>
+                    <div class="modal-body" id="text-detail">
+                        <h6 id="text-current"></h6>
+                        <input type="text" id="text-new" autofocus>
+                    </div>
+
+                    <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="btn-yes" data-dismiss="modal">Yes</button>
+                            <button type="button" class="btn btn-primary" id="btn-no">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-md-12">
@@ -43,6 +62,7 @@
                                     <th scope="col">Frequency (min)</th>
                                     <th scope="col">Next Arrival</th>
                                     <th scope="col">Minutes Away</th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
