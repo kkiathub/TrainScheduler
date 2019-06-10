@@ -24,12 +24,26 @@
 <body>
     <div class="container">
         <!-- Jumbotron -->
-        <div class="jumbotron">
-            <h1 class="text-center">Train Scheduler</h1>
-            <h3 class="text-center">Let's your trip begin!</h3>
+        <div class="jumbotron header1">
+            <div class="card head-content  m-auto">
+                <div class="row no-gutters">
+                    <div class="col-12 col-md-4"></div>
+                    <div class="col-3 col-md-1">
+                        <img src="assets/images/train2.png" class="card-img mt-4" alt="...">
+                    </div>
+                    <div class="col-9 col-md-4">
+                        <div class="card-body">
+                            <h1 class="card-title text-center">Train Scheduler</h1>
+                            <h3 class="card-text text-center">Let's your trip begin!</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
         <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -41,8 +55,26 @@
                     </div>
 
                     <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="btn-yes" data-dismiss="modal">Yes</button>
-                            <button type="button" class="btn btn-primary" id="btn-no">No</button>
+                        <button type="button" class="btn btn-primary" id="btn-yes" data-dismiss="modal">Yes</button>
+                        <button type="button" class="btn btn-primary" id="btn-no">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="invalidModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="text-error-title">Wrong time format</h5>
+                    </div>
+                    <div class="modal-body" id="text-detail">
+                        <h6 id="text-error">Please re-enter in military time format (HH:mm).</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btn-ok">OK</button>
                     </div>
                 </div>
             </div>
@@ -91,7 +123,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="first-input">First Train Time (HH:mm military time)</label>
-                                <input class="form-control" id="first-input" placeholder="" type="text"/>
+                                <input class="form-control" id="first-input" placeholder="" type="text" />
                             </div>
                             <div class="form-group">
                                 <label for="frequency-input">Frequency (min)</label>

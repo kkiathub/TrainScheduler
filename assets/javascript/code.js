@@ -21,14 +21,39 @@ var database = firebase.database();
 
 var timeHandle;
 
+function showErrorMessage(title, detail) {
+    $("#text-error").text(detail);
+    $("#text-error-title").text(title);
+    $("#invalidModal").modal({backdrop: "static", keyboard: false});
+}
+
 $("#add-train-btn").on("click", function (event) {
     event.preventDefault();
 
     // Grabs user input
     var trainName = $("#name-input").val().trim();
+    if (trainName.length<=0) {
+        showErrorMessage("Missing information input!", "Please enter train name.");
+        return;
+    }
     var trainDestination = $("#destination-input").val().trim();
+    if (trainDestination.length<=0) {
+        showErrorMessage("Missing information input!", "Please enter destination.");
+        return;
+    }
+    var firstStr = $("#first-input").val().trim();
+    if (firstStr.length<=0) {
+        showErrorMessage("Missing information input!", "Please enter first train time.");
+        return;
+    }
     var trainFirst = moment($("#first-input").val().trim(), "HH:mm").format("X");
+
     var tranFreq = $("#frequency-input").val();
+    console.log("freq : " + tranFreq + " len: " + tranFreq.length);
+    if (tranFreq.length<=0) {
+        showErrorMessage("Missing information input!", "Please enter frequency.");
+        return;
+    }
 
     var newTrain = {
         name: trainName,
@@ -111,7 +136,53 @@ function minuteUpdate() {
     return;
 }
 
+$("#first-input").blur(function() {
+
+    var timeStr = $("#first-input").val().trim();
+    if (timeStr.length<=0) {
+        return;
+    }
+
+    var timeValid=false;
+
+    var colonPos = timeStr.indexOf(":");
+    if (colonPos>0) {
+        var hrStr = timeStr.slice(0, colonPos);
+        var minStr = timeStr.slice(colonPos+1, timeStr.length);
+        
+        if (isNaN(hrStr) || isNaN(minStr) || (hrStr.length===0)  || (minStr.length===0)) {
+
+        } else {
+            var iHr = parseInt(hrStr);
+            var iMin = parseInt(minStr);
+
+            if ( (iHr>=0) && (iHr<24) && (iMin>=0) && (iMin <60)) {
+                timeValid = true;
+                timeStr = moment(timeStr, "HH:mm").format("HH:mm");
+                $("#first-input").val(timeStr);
+            }
+        }
+    }
+
+    if (!timeValid) {
+        showErrorMessage("Wrong time format!", "Please re-enter in military time format (HH:mm).");
+        $("#first-input").val("");
+    }
+});
+
 $("#btn-yes").on("click", function() {
+    var newVal = $("#text-new").val();
+    if (newVal.length<=0) {
+        var itemStr = "";
+        if (updateType==UPDATE_NAME) {
+            itemStr = "train name.";
+        } else {
+            itemStr = "destination.";
+        }
+        showErrorMessage("Blank input!", "Please re-enter " + itemStr);
+        return;
+    }
+
     var rowData = $("tbody").children();
     var rowSelected=-1;
 
@@ -123,7 +194,6 @@ $("#btn-yes").on("click", function() {
     }
 
     if (rowSelected>=0) {
-        var newVal = $("#text-new").val();
         if (updateType==UPDATE_NAME) {
             var updateElem = $($(rowData[rowSelected]).children()[0]);
             updateElem.text(newVal);
@@ -144,6 +214,10 @@ $("#btn-yes").on("click", function() {
 $("#btn-no").on("click", function() {
     $("#myModal").modal("hide");
     $("#text-new").val("");
+})
+
+$("#btn-ok").on("click", function() {
+    $("#invalidModal").modal("hide");
 })
 
 $("#myModal").on('shown.bs.modal', function () {
